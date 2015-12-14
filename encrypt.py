@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 
-import sys
+import string
 import math
+import os
 
-def scytale_encrypt(plain_text, key):
-    #chars = [c.upper() for c in plain_text if c not in (' ',',','.','?','!',':',';',"'","(",")")]
-    chars = [c for c in plain_text]
+from random import Random
+
+def scytale_encrypt(text, key):
+    #chars = [c.upper() for c in text if c not in (' ',',','.','?','!',':',';',"'","(",")")]
+    chars = [c for c in text]
     chunks = math.ceil(len(chars) / float(key))
     inters, i, j = [], 1, 1
 
@@ -28,14 +31,39 @@ def scytale_encrypt(plain_text, key):
     return ''.join(cipher)
 
 
+def jefferson_encrypt(string):
+    result = ""
+    # Loop over characters
+    for v in string:
+        # Convert to number with ord
+        c = ord(v)
+        # Shift number back or forward
+        if c >= ord('a') and c <= ord('z'):
+            if c > ord('m'):
+                c -= 13
+            else:
+                c += 13
+        elif c >= ord('A') and c <= ord('Z'):
+            if c > ord('M'):
+                c -= 13
+            else:
+                c += 13
+        # Append to result.
+        result += chr(c)
+    # Return transformation.
+    return result
+
+
 def main():
     filename  = raw_input("[?] Enter text file name: ")
     output    = raw_input("[?] Enter output text file name: ")
+    key       = input("[?] Enter the key number (0-9): ")
 
     file      = open(str(filename), 'r')
     text      = file.read()
-    encrypted = scytale_encrypt(text, 3)
     file.close()
+    encrypted = scytale_encrypt(text, key)
+    encrypted = jefferson_encrypt(encrypted)
 
     print "[i] Text: \n %s \n" % (text)
     print "[i] Encrypted: \n %s \n" % (encrypted)
