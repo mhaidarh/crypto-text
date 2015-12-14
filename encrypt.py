@@ -7,8 +7,7 @@ import os
 from random import Random
 
 def scytale_encrypt(text, key):
-    #chars = [c.upper() for c in text if c not in (' ',',','.','?','!',':',';',"'","(",")")]
-    chars = [c for c in text]
+    chars = [c for c in text if c not in (',','.','?','!',':',';',"'","(",")")]
     chunks = math.ceil(len(chars) / float(key))
     inters, i, j = [], 1, 1
 
